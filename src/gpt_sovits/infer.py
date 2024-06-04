@@ -446,11 +446,12 @@ class GPTSoVITSInference:
     ):
         lines = [line.strip() for line in text.split("\n") if line.strip()]
         texts = [
-            "." + merged.strip()
+            merged.strip()
             for line in lines
             for merged in merge_short_texts(cut5(line))
             if not all(char in splits for char in merged.strip())
         ]
+        texts = ["." + text if len(text) < 5 else text for text in texts]
         for text in texts:
             audio = self._get_tts_wav(
                 text,
