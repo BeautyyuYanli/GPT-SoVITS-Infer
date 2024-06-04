@@ -10,8 +10,8 @@ from typing import Tuple
 from typing import Union
 
 import torch
-from AR.modules.activation import MultiheadAttention
-from AR.modules.scaling import BalancedDoubleSwish
+from gpt_sovits.AR.modules.activation import MultiheadAttention
+from gpt_sovits.AR.modules.scaling import BalancedDoubleSwish
 from torch import nn
 from torch import Tensor
 from torch.nn import functional as F
@@ -121,6 +121,7 @@ class TransformerEncoder(nn.Module):
         >>> src = torch.rand(10, 32, 512)
         >>> out = transformer_encoder(src)
     """
+
     __constants__ = ["norm"]
 
     def __init__(self, encoder_layer, num_layers, norm=None):

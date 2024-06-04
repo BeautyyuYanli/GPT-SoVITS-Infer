@@ -4,16 +4,16 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from module import commons
-from module import modules
-from module import attentions
+from gpt_sovits.module import commons
+from gpt_sovits.module import modules
+from gpt_sovits.module import attentions
 
 from torch.nn import Conv1d, ConvTranspose1d, AvgPool1d, Conv2d
 from torch.nn.utils import weight_norm, remove_weight_norm, spectral_norm
-from module.commons import init_weights, get_padding
-from module.mrte_model import MRTE
-from module.quantize import ResidualVectorQuantizer
-from text import symbols
+from gpt_sovits.module.commons import init_weights, get_padding
+from gpt_sovits.module.mrte_model import MRTE
+from gpt_sovits.module.quantize import ResidualVectorQuantizer
+from gpt_sovits.text import symbols
 from torch.cuda.amp import autocast
 import contextlib
 
@@ -229,7 +229,7 @@ class TextEncoder(nn.Module):
         )
 
         y = self.ssl_proj(y * y_mask) * y_mask
-     
+
         y = self.encoder_ssl(y * y_mask, y_mask)
 
         text_mask = torch.unsqueeze(
@@ -824,7 +824,7 @@ class SynthesizerTrn(nn.Module):
         use_sdp=True,
         semantic_frame_rate=None,
         freeze_quantizer=None,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.spec_channels = spec_channels
@@ -895,10 +895,10 @@ class SynthesizerTrn(nn.Module):
         # if freeze_quantizer:
         #     self.ssl_proj.requires_grad_(False)
         #     self.quantizer.requires_grad_(False)
-            #self.quantizer.eval()
-            # self.enc_p.text_embedding.requires_grad_(False)
-            # self.enc_p.encoder_text.requires_grad_(False)
-            # self.enc_p.mrte.requires_grad_(False)
+        # self.quantizer.eval()
+        # self.enc_p.text_embedding.requires_grad_(False)
+        # self.enc_p.encoder_text.requires_grad_(False)
+        # self.enc_p.mrte.requires_grad_(False)
 
     def forward(self, ssl, y, y_lengths, text, text_lengths):
         y_mask = torch.unsqueeze(commons.sequence_mask(y_lengths, y.size(2)), 1).to(
@@ -907,7 +907,9 @@ class SynthesizerTrn(nn.Module):
         ge = self.ref_enc(y * y_mask, y_mask)
 
         with autocast(enabled=False):
-            maybe_no_grad = torch.no_grad() if self.freeze_quantizer else contextlib.nullcontext()
+            maybe_no_grad = (
+                torch.no_grad() if self.freeze_quantizer else contextlib.nullcontext()
+            )
             with maybe_no_grad:
                 if self.freeze_quantizer:
                     self.ssl_proj.eval()

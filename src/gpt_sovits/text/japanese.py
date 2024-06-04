@@ -5,7 +5,8 @@ import sys
 import pyopenjtalk
 
 
-from text import symbols
+from gpt_sovits.text import symbols
+
 # Regular expression matching Japanese without punctuation marks:
 _japanese_characters = re.compile(
     r"[A-Za-z\d\u3005\u3040-\u30ff\u4e00-\u9fff\uff11-\uff19\uff21-\uff3a\uff41-\uff5a\uff66-\uff9d]"
@@ -86,7 +87,7 @@ def preprocess_jap(text, with_prosody=False):
                 text += p.split(" ")
 
         if i < len(marks):
-            if marks[i] == " ":# 防止意外的UNK
+            if marks[i] == " ":  # 防止意外的UNK
                 continue
             text += [marks[i].replace(" ", "")]
     return text
@@ -95,6 +96,7 @@ def preprocess_jap(text, with_prosody=False):
 def text_normalize(text):
     # todo: jap text normalize
     return text
+
 
 # Copied from espnet https://github.com/espnet/espnet/blob/master/espnet2/text/phoneme_tokenizer.py
 def pyopenjtalk_g2p_prosody(text, drop_unvoiced_vowels=True):
@@ -172,12 +174,14 @@ def pyopenjtalk_g2p_prosody(text, drop_unvoiced_vowels=True):
 
     return phones
 
+
 # Copied from espnet https://github.com/espnet/espnet/blob/master/espnet2/text/phoneme_tokenizer.py
 def _numeric_feature_by_regex(regex, s):
     match = re.search(regex, s)
     if match is None:
         return -50
     return int(match.group(1))
+
 
 def g2p(norm_text, with_prosody=False):
     phones = preprocess_jap(norm_text, with_prosody)

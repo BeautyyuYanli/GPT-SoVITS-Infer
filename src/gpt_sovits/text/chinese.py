@@ -5,9 +5,9 @@ import re
 import cn2an
 from pypinyin import lazy_pinyin, Style
 
-from text.symbols import punctuation
-from text.tone_sandhi import ToneSandhi
-from text.zh_normalization.text_normlization import TextNormalizer
+from gpt_sovits.text.symbols import punctuation
+from gpt_sovits.text.tone_sandhi import ToneSandhi
+from gpt_sovits.text.zh_normalization.text_normlization import TextNormalizer
 
 normalizer = lambda x: cn2an.transform(x, "an2cn")
 
@@ -35,7 +35,7 @@ rep_map = {
     "/": ",",
     "—": "-",
     "~": "…",
-    "～":"…",
+    "～": "…",
 }
 
 tone_modifier = ToneSandhi()

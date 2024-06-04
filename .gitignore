@@ -1,3 +1,7 @@
+pretrained_models/
+playground/
+.vscode/
+.pdm-python
 .DS_Store
 __pycache__
 *.pyc

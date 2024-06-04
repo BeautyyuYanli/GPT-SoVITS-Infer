@@ -3,8 +3,8 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from module import commons
-from module.modules import LayerNorm
+from gpt_sovits.module import commons
+from gpt_sovits.module.modules import LayerNorm
 
 
 class Encoder(nn.Module):
@@ -18,7 +18,7 @@ class Encoder(nn.Module):
         p_dropout=0.0,
         window_size=4,
         isflow=False,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.hidden_channels = hidden_channels
@@ -99,7 +99,7 @@ class Decoder(nn.Module):
         p_dropout=0.0,
         proximal_bias=False,
         proximal_init=True,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.hidden_channels = hidden_channels
@@ -567,7 +567,7 @@ class FFT(nn.Module):
         proximal_bias=False,
         proximal_init=True,
         isflow=False,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.hidden_channels = hidden_channels
