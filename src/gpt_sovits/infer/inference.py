@@ -7,6 +7,7 @@ import numpy as np
 import librosa
 import sys
 import importlib.util
+from contextlib import contextmanager
 from typing import Optional, Any, TypeVar, cast, List
 from queue import Queue
 from transformers import AutoModelForMaskedLM, AutoTokenizer
@@ -47,7 +48,8 @@ class DictToAttrRecursive(dict):
             raise AttributeError(f"Attribute {item} not found")
 
 
-def _load_sovits(sovits_path: str):
+@contextmanager
+def _tmp_sys_path():
     package_name = "gpt_sovits"
     spec = importlib.util.find_spec(package_name)
     if spec is not None:
@@ -60,9 +62,8 @@ def _load_sovits(sovits_path: str):
         raise ModuleNotFoundError(f"Package {package_name} not found.")
 
     sys.path.append(tmp_path)
-    dict_s2 = torch.load(sovits_path, map_location="cpu")
+    yield
     sys.path.remove(tmp_path)
-    return dict_s2
 
 
 def clean_text_inf(text, language):
@@ -167,7 +168,8 @@ class GPTSoVITSInference:
         self.ssl_model = self._prepare_torch(cnhubert.get_model())
 
     def load_sovits(self, sovits_path: str):
-        dict_s2 = _load_sovits(sovits_path)
+        with _tmp_sys_path():
+            dict_s2 = torch.load(sovits_path, map_location="cpu")
         hps = dict_s2["config"]
         hps = DictToAttrRecursive(hps)
         hps.model.semantic_frame_rate = "25hz"
