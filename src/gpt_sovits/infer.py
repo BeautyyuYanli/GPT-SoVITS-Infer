@@ -1,23 +1,17 @@
-from typing import Optional, Any, TypeVar, cast, List
-import os, re, sys
+import re
+import sys
 import LangSegment
-from queue import Queue
-import threading
-
 import torch
-
-
-from transformers import AutoModelForMaskedLM, AutoTokenizer
+import threading
 import numpy as np
 import librosa
-from scipy.io import wavfile
 import sys
 import importlib.util
-from copy import deepcopy
-
+from typing import Optional, Any, TypeVar, cast, List
+from queue import Queue
+from transformers import AutoModelForMaskedLM, AutoTokenizer
 
 import gpt_sovits.feature_extractor.cnhubert as cnhubert
-from gpt_sovits.feature_extractor.cnhubert import CNHubert
 from gpt_sovits.module.models import SynthesizerTrn
 from gpt_sovits.AR.models.t2s_lightning_module import Text2SemanticLightningModule
 from gpt_sovits.text import cleaned_text_to_sequence
@@ -134,7 +128,7 @@ class GPTSoVITSInference:
 
     tokenizer: AutoTokenizer
     bert_model: AutoModelForMaskedLM
-    ssl_model: CNHubert
+    ssl_model: cnhubert.CNHubert
 
     vq_model: SynthesizerTrn
     hps: DictToAttrRecursive
@@ -390,7 +384,12 @@ class GPTSoVITSInference:
             self.bert1 = None
 
     def _get_tts_wav(
-        self, text: str, text_language: str = "auto", top_k=5, top_p=1, temperature=1
+        self,
+        text: str,
+        text_language: str = "auto",
+        top_k=5,
+        top_p=1,
+        temperature=1,
     ):
         phones2, bert2, norm_text2 = self._get_phones_and_bert(text, text_language)
         if self.prompt_text:
@@ -508,20 +507,24 @@ class GPTSoVITSInference:
 
 
 if __name__ == "__main__":
+
+    from scipy.io import wavfile
+
     inference = GPTSoVITSInference(
         bert_path="pretrained_models/chinese-roberta-wwm-ext-large",
         cnhubert_base_path="pretrained_models/chinese-hubert-base",
     )
-    inference.load_sovits("playground/sft_model/ddd_e8_s128.pth")
-    inference.load_gpt("playground/sft_model/ddd-e10.ckpt")
-    with open("playground/data/prompt.txt", "r") as f:
-        prompt_text = f.read().strip()
+    inference.load_sovits("pretrained_models/s2G488k.pth")
+    inference.load_gpt(
+        "pretrained_models/s1bert25hz-2kh-longer-epoch=68e-step=50232.ckpt"
+    )
+    prompt_text = "你好 ChatGPT，请问你知道为什么鲁迅暴打周树人吗？"
     inference.set_prompt_audio(
-        prompt_audio_path="playground/data/prompt.wav",
+        prompt_audio_path=f"playground/{prompt_text}.wav",
         prompt_text=prompt_text,
     )
 
     sample_rate, data = inference.get_tts_wav(
         text="鲁迅为什么暴打周树人？？？这是一个问题\n\n自古以来，文人相轻，鲁迅和周树人也不例外。鲁迅和周树人是中国现代文学史上的两位伟大作家，他们的文学成就都是不可磨灭的。但是，鲁迅和周树人之间的关系并不和谐，两人之间曾经发生过一次激烈的冲突，甚至还打了起来。那么，鲁迅为什么会暴打周树人呢？这是一个问题。  ",
     )
-    wavfile.write(f"playground/data/test.wav", sample_rate, data)
+    wavfile.write(f"playground/output.wav", sample_rate, data)
