@@ -26,7 +26,7 @@ pip install GPT-SoVITS
 
 I do not add the packages related to torch to the dependencies of GPT-SoVITS-Infer. Check if the environment is ready if things go wrong.
 
-# Advanced Usage
+## Advanced Usage
 
 - `GPTSoVITSInference.load_sovits` and `GPTSoVITSInference.load_gpt`: You can load your own fine-tuned model by the methods.
 - `GPTSoVITSInference.set_prompt_audio`: Set the prompt audio for the inference.
