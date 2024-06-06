@@ -134,8 +134,16 @@ class GPTSoVITSInferencePool:
         temperature=1,
     ):
         audio_list: List[Tuple[int, np.ndarray]] = []
+        total = len(clean_and_cut_text(text))
         for thing in tqdm.tqdm(
-            self.get_tts_wav_stream(text, text_language, top_k, top_p, temperature)
+            self.get_tts_wav_stream(
+                text,
+                text_language,
+                top_k,
+                top_p,
+                temperature,
+            ),
+            total=total,
         ):
             audio_list.append(thing)
         return audio_list[0][0], np.concatenate(

@@ -36,7 +36,6 @@ from einops import rearrange, repeat
 import torch
 from torch import nn
 import torch.nn.functional as F
-from tqdm import tqdm
 
 
 def default(val: tp.Any, d: tp.Any) -> tp.Any:
@@ -75,7 +74,7 @@ def kmeans(samples, num_clusters: int, num_iters: int = 10):
     means = sample_vectors(samples, num_clusters)
 
     print("kmeans start ... ")
-    for _ in tqdm(range(num_iters)):
+    for _ in range(num_iters):
         diffs = rearrange(samples, "n d -> n () d") - rearrange(means, "c d -> () c d")
         dists = -(diffs**2).sum(dim=-1)
 
