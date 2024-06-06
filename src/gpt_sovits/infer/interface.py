@@ -1,4 +1,4 @@
-from gpt_sovits.infer.inference import GPTSoVITSInference
+from gpt_sovits.infer.worker import GPTSoVITSInference
 from pydantic import BaseModel
 from typing import List, Tuple, Optional
 from pathlib import Path
@@ -11,7 +11,7 @@ class ConfigData(BaseModel):
     prompts: List[str]
 
 
-class GPTSoVITSAPI:
+class GPTSoVITSInferenceSimple:
     config_data_base: Path
     config_data: ConfigData
     working_config: Tuple[str, str]
@@ -141,7 +141,7 @@ if __name__ == "__main__":
         Lock(),
     )
 
-    api = GPTSoVITSAPI(
+    api = GPTSoVITSInferenceSimple(
         config_data_base="config_data",
         inference_worker_and_lock=inference_worker_and_lock,
     )
