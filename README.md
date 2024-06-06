@@ -8,13 +8,27 @@ Check out the [example](example.ipynb) notebook for a quick start. Or open it in
 
 ## Prepare the environment
 
-As we all know, the dependencies of an AI project are always a mess. Here is how I prepare the environment for this project, by conda:
+As we all know, the dependencies of an AI project are always a mess. Here is how I prepare the environment for this project:
+
+<details><summary>Conda (Linux)</summary>
 
 ```
 conda install python=3.10
 conda install pytorch=2.1 torchvision torchaudio pytorch-lightning pytorch-cuda=12.1 -c pytorch -c nvidia 
 conda install ffmpeg=6.1.1 -c conda-forge
 ```
+
+</details>
+
+<details><summary>MacOS</summary>
+
+```
+brew install ffmpeg
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+pip3 install pytorch-lightning
+pip3 install GPT-SoVITS-Infer
+```
+</details>
 
 You can also try to prepare the environment with cpu only options, which should work, but I have not tested it yet.
 
