@@ -1,3 +1,3 @@
-from gpt_sovits.infer.worker import GPTSoVITSInference
+from gpt_sovits.infer.inference import GPTSoVITSInference
 
 __all__ = ["GPTSoVITSInference"]

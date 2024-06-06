@@ -456,9 +456,6 @@ class GPTSoVITSInference:
         return self.sample_rate, np.concatenate(audio_opt)
 
 
-Worker = GPTSoVITSInference
-
-
 if __name__ == "__main__":
 
     from scipy.io import wavfile

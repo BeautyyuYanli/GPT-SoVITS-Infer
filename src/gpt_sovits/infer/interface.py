@@ -1,4 +1,4 @@
-from gpt_sovits.infer.worker import GPTSoVITSInference
+from gpt_sovits.infer.inference import GPTSoVITSInference
 from pydantic import BaseModel
 from typing import List, Tuple, Optional
 from pathlib import Path
