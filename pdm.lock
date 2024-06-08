@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:a9dda9c7491d0ddc8dba57e41735fa185328b4f85800187a9f8b1b1a84f908d2"
+content_hash = "sha256:a3131d54d0dfa1bfda5ff105ae35b9c272ad4a4e5488c0db2c1c844299a1f60d"
 
 [[package]]
 name = "audioread"

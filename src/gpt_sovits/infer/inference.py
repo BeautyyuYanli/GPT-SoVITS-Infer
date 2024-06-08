@@ -18,7 +18,7 @@ from gpt_sovits.text import cleaned_text_to_sequence
 from gpt_sovits.text.cleaner import clean_text
 from gpt_sovits.module.mel_processing import spectrogram_torch
 
-from gpt_sovits.infer.text_utils import clean_and_cut_text, full_splits
+from gpt_sovits.infer.text_utils import clean_and_cut_text
 
 
 class DictToAttrRecursive(dict):
@@ -291,8 +291,6 @@ class GPTSoVITSInference:
     ):
         if prompt_text:
             prompt_text = prompt_text.strip("\n")
-            if prompt_text[-1] not in full_splits:
-                prompt_text += "."
         self.prompt_text = prompt_text
 
         if prompt_audio_path:

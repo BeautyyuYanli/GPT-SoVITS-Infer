@@ -1,70 +1,18 @@
 import re
-from typing import List, Set
+from typing import List, Sequence
 
-tier1_splits = {
-    "。",
-    "？",
-    "！",
-    ".",
-    "?",
-    "!",
-}
-
-tier2_splits = {
-    "，",
-    ",",
-    ":",
-    "：",
-    "—",
-    "…",
-    "~",
-    "、",
-    "；",
-    ";",
-    "（",
-    "(",
-    "）",
-    ")",
-    "《",
-    "》",
-    "“",
-    "”",
-    "‘",
-    "’",
-    '"',
-    "'",
-    "【",
-    "】",
-    "[",
-    "]",
-    "「",
-    "」",
-    "『",
-    "』",
-    "<",
-    ">",
-}
-
-full_splits = tier1_splits | tier2_splits
+tier1_punc = ".?!。？！"
+tier2_punc = ",.:;…~-—，、：；"
+tier3_punc = "\"'“”‘’（）《》【】[]「」『』<>·"
 
 
-def cut5(inp: str, splits: Set[str], append_dot: str):
+def cut5(inp: str, splits: Sequence[str]):
     """Cut one line of text into pieces."""
     items = re.split(f"([{''.join(re.escape(x) for x in splits)}])", inp)
-    if items[-1] == "":
-        items = items[:-1]
+    items = [item.strip() for item in items if item.strip()]
     if len(items) % 2 == 1:
-        items.append(append_dot)
-
-    mergeitems: List[str] = [items[0]]
-    for item in items[1:]:
-        if item == "":
-            continue
-        if item not in splits:
-            mergeitems.append(item)
-        else:
-            mergeitems[-1] += item
-
+        items.append("")
+    mergeitems = [a + b for a, b in zip(items[0::2], items[1::2])]
     return mergeitems
 
 
@@ -83,14 +31,21 @@ def merge_short_texts(texts: List[str], threshold: int = 32):
 
 
 def clean_and_cut_text(text: str) -> List[str]:
+    new_text = ""
+    for char in text:
+        if char in tier2_punc:
+            new_text += ","
+        elif char in tier3_punc:
+            new_text += " "
+        else:
+            new_text += char
+    text = new_text
+
     lines = [line.strip() for line in text.split("\n") if line.strip()]
-    sents = [
-        sent for line in lines for sent in cut5(line, tier1_splits, ".") if sent.strip()
-    ]
+    sents = [sent for line in lines for sent in cut5(line, tier1_punc)]
     texts = [
-        merged.strip()
+        "," + merged.strip()
         for sent in sents
-        for merged in merge_short_texts(cut5(sent, tier2_splits, ""))
+        for merged in merge_short_texts(cut5(sent, ","))
     ]
-    texts = [("." + text) if len(text) < 5 else text for text in texts]
     return texts
