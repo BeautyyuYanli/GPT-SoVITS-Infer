@@ -123,7 +123,11 @@ class GPTSoVITSInferencePool:
             for task in tasks
         ]
         for future in futures:
-            yield future.result()
+            try:
+                yield future.result()
+            except Exception as e:
+                self.pool.shutdown(wait=False)
+                raise e
 
     def get_tts_wav(
         self,
@@ -149,3 +153,6 @@ class GPTSoVITSInferencePool:
         return audio_list[0][0], np.concatenate(
             [data for _, data in audio_list], axis=0
         )
+
+    def __del__(self):
+        self.pool.shutdown(wait=False)
