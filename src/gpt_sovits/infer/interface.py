@@ -51,7 +51,7 @@ def read_config_data(config_data_base: str) -> ConfigData:
 PromptType = Union[str, Tuple[str, int, "np.ndarray"]]
 
 
-class GPTSoVITSInferenceSimple:
+class GPTSoVITSInterfaceSimple:
     config_data: ConfigData
     working_model: Optional[str]
     working_prompt: Optional[str]
@@ -63,7 +63,7 @@ class GPTSoVITSInferenceSimple:
         self,
         config_data_base: str,
         device: Optional[str] = None,
-        is_half: Optional[bool] = False,
+        is_half: Optional[bool] = True,
     ):
         self.config_data = read_config_data(config_data_base)
         self.working_model = None
