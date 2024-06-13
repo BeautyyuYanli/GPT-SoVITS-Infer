@@ -1,6 +1,6 @@
 [project]
 name = "GPT-SoVITS-Infer"
-version = "0.2.3"
+version = "0.2.4"
 description = "Inference code for GPT-SoVITS"
 authors = [
     {name = "Yanli",email = "mail@yanli.one"},
