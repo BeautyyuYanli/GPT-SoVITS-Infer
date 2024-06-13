@@ -298,12 +298,16 @@ class GPTSoVITSInference:
                 path=prompt_audio_path, sr=None
             )
         else:
-            if not prompt_audio_data or not prompt_audio_sr:
+            if (prompt_audio_data is None) or (prompt_audio_sr is None):
                 raise ValueError(
                     "When prompt_audio_path is not given, prompt_audio_data and prompt_audio_sr must be given."
                 )
         self.prompt_audio_sr = cast(int, prompt_audio_sr)
         self.prompt_audio_data = cast(np.ndarray, prompt_audio_data)
+        if self.prompt_audio_data.dtype == np.int16:
+            self.prompt_audio_data = (
+                self.prompt_audio_data.astype(self.np_dtype) / 32768
+            )
 
         with torch.no_grad():
             wav16k = librosa.resample(
