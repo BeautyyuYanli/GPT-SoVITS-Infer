@@ -24,14 +24,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: change-string-case
-        uses: ASzc/change-string-case-action@v1
-        with:
-          string: "${{ github.repository }}"
-          case: lowercase
+        run: |
+          my_string="${{ github.repository }}"
+          echo "REPO=lowercase_string::${my_string,,}" >> $GITHUB_ENV
 
       - name: Build Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: ghcr.io/{{ steps.change-string-case.outputs.lowercase }}:${{ inputs.version }}
+          tags: ghcr.io/$REPO:${{ inputs.version }}
