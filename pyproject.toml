@@ -1,12 +1,12 @@
 [project]
 name = "GPT-SoVITS-Infer"
-version = "0.2.7"
+version = "0.2.8"
 description = "Inference code for GPT-SoVITS"
 authors = [
     {name = "Yanli",email = "mail@yanli.one"},
 ]
 dependencies = [
-    "numpy>=1.26.4",
+    "numpy>=1.26.4,<2",
     "scipy>=1.13.1",
     "librosa>=0.10.2.post1",
     "transformers>=4.41.2",
