@@ -8,9 +8,10 @@ RUN apt-get update -qq && apt-get install -qqy --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /app_build
 COPY src/ pdm.lock pyproject.toml README.md /app_build/
+RUN pip install pdm
 RUN pdm use $(which python)
 RUN pdm sync
-RUN pip install pytorch-lightning==2.0.3 nltk>=3.8.1 pdm
+RUN pip install pytorch-lightning==2.0.3 nltk>=3.8.1
 RUN python -m nltk.downloader averaged_perceptron_tagger && \
     python -m nltk.downloader cmudict
 RUN pdm cache clear
