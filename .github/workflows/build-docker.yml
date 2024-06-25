@@ -26,7 +26,7 @@ jobs:
       - name: change-string-case
         uses: ASzc/change-string-case-action@v1
         with:
-          string: {{ github.repository }}
+          string: "${{ github.repository }}"
           case: lowercase
 
       - name: Build Docker image
