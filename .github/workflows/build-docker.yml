@@ -33,4 +33,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ env.REPO }}:${{ inputs.version }}
+          tags: ghcr.io/${{ env.REPO.lowercase_string }}:${{ inputs.version }}
