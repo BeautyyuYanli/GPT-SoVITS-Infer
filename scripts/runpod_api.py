@@ -3,7 +3,6 @@ import os
 import dotenv
 import runpod
 import base64
-import gzip
 import numpy as np
 from pydantic import BaseModel, Field
 from pydub import AudioSegment
@@ -45,7 +44,7 @@ def _encode_string(sr: int, data: np.ndarray) -> bytes:
         )
         bytes_data = in_memory_file.read()
         print(len(bytes_data))
-        return base64.standard_b64encode(gzip.compress(bytes_data))
+        return base64.standard_b64encode(bytes_data)
 
 
 def handler_fn(job):
