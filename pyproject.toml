@@ -26,6 +26,10 @@ requires-python = ">=3.10, <3.12"
 readme = "README.md"
 license = {text = "MIT"}
 
+[project.optional-dependencies]
+runpod = [
+    "runpod~=1.6",
+]
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"

@@ -97,7 +97,7 @@ class GPTSoVITSInterfaceSimple:
             self._load_model(model_name)
             self.working_model = model_name
         if isinstance(prompt, str):
-            if prompt != self.working_model:
+            if prompt != self.working_prompt:
                 self._load_prompt(prompt)
                 self.working_prompt = prompt
         else:

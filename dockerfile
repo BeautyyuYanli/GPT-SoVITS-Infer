@@ -13,4 +13,5 @@ RUN pip install pdm pytorch-lightning==2.0.3 nltk>=3.8.1 && \
     pdm sync && \
     pdm cache clear && pip cache purge
 RUN python -m nltk.downloader averaged_perceptron_tagger && python -m nltk.downloader cmudict
-WORKDIR /workspace
+COPY scripts/ /
+WORKDIR /scripts
