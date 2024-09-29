@@ -24,7 +24,7 @@ class InputType(BaseModel):
 
 
 interface = GPTSoVITSInterfaceSimple(
-    config_data_base=os.getenv("GPT_SOVITS_CONFIG", ""),
+    config_data_base=os.getenv("GPT_SOVITS_CONFIG", "/config_data"),
 )
 
 
